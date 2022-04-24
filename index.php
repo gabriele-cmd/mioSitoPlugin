@@ -6,9 +6,10 @@
     header('Content-Type: application/json');
     $page = @$_GET["page"] ?? 0;
     $size = @$_GET["size"] ?? 20;
+    $id = @$_GET["id"] ?? 0;
     $count = countRow();
-    $last = ceil($count/$size);
-    $baseurl = "http://localhost:8080/index.php";
+    $last = ceil($count/$size) -1;
+    $baseurl = "http://localhost:8090/index.php";
 
 
     $arrayJSON = array ();
@@ -36,21 +37,24 @@
             break;
 
         case 'POST':
-            $arrayJSON['_embedded']['employees'] = GET($page*$size, $size);
-            array_push($arrayJSON['_embedded']['employees'], PUSH($_POST["nome"], $_POST["cognome"], $_POST["genere"]));
+            $data = json_decode(file_get_contents('php://input'), true);
+            POST($data["first_name"], $data["last_name"], $data["gender"]);
 
-            echo json_encode($arrayJSON);
+            echo json_encode($data);
             break;
 
         case 'PUT':
-            
+            $data = json_decode(file_get_contents('php://input'), true);
+            PUT($data["first_name"], $data["last_name"], $data["gender"], $id);
+
+            echo json_encode($data); //FUNZIONE GET ID
             break;
 
         case 'DELETE':
             $arrayJSON['_embedded']['employees'] = GET($page*$size, $size);
-            DELETE($_POST["id"]);
+            DELETE($id);
 
-            if(($key = array_search('id: '. $_POST["id"], $arrayJSON)) !== false){
+            if(($key = array_search('id: '. $id, $arrayJSON)) !== false){
                 unset($arrayJSON[$key]);
             }
 
