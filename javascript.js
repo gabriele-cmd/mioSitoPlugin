@@ -25,7 +25,7 @@ function displayEmployeeList(){
     rows = rows + '<td>' + value.last_name + '</td>';
     rows = rows + '<td>' + value.gender + '</td>';
     rows = rows + '<td data-id="' + value.id + '">';
-    rows = rows + '<button class="btn btn-warning btn-sm modifica-dipendente" onclick = "setModal(' + value.id + ')" data-bs-toggle="modal" data-bs-target="#modifica-dipendente"> Modifica </button>  ';
+    rows = rows + '<button class="btn btn-warning btn-sm modifica-dipendente" data-bs-toggle="modal" data-bs-target="#modifica-dipendente"> Modifica </button>  ';
     rows = rows + '<button class="btn btn-danger btn-sm elimina-dipendente"> Elimina </button>';
     rows = rows + '</td>';
     rows = rows + '</tr>';
@@ -34,12 +34,6 @@ function displayEmployeeList(){
   //attraverso il metodo html di jQuery sostituisco il body creato (rows) all'attributo tbody della tabella
     $("#tbody").html(rows);
   }
-
-function setModal(id) {
-  $("#nomeMod").prop("placeholder", $("#nome-" + id).text());
-  $("#cognomeMod").prop("placeholder", $("#cognome-" + id).text());
-  $("#genereMod").val($("#genere-" + id).text());
-}
 
 $(document).ready(function (){
 
@@ -52,7 +46,7 @@ $(document).ready(function (){
         var nome = $("#nome").val();
         var cognome = $("#cognome").val();
         var genere = $("#genere").val();
-        var payload = { first_name: nome, last_name: cognome, gender: genere };
+        var payload = { "first_name": nome, "last_name": cognome, "gender": genere };
 
         if(nome != "" && cognome != ""){
           //Chiamata POST Ajax
@@ -91,9 +85,8 @@ $(document).ready(function (){
     });
 
     //Modifica Dipendente
-    $("body").on("click", "#modify", function(){
+    $("body").on("click", ".modifica-dipendente", function(){
       var id = $(this).parent("td").data("id");
-      //setModal(id);
 
       var genere = $(this).parent("td").prev("td").text();
       var cognome = $(this).parent("td").prev("td").prev("td").text();
@@ -110,7 +103,7 @@ $(document).ready(function (){
         var surname = $("#cognomeMod").val();
         var sesso = $("#genereMod").val();
 
-        var payload = { first_name: name, lastName: surname, gender: sesso };
+        var payload = { "first_name": name, "last_name": surname, "gender": sesso };
         //METTERE UNA NUOVA CHIAMATA GET PER AGGIORNARE
         
         $.ajax({
