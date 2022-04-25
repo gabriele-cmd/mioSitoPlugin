@@ -51,7 +51,6 @@
             break;
 
         case 'DELETE':
-            //$arrayJSON['_embedded']['employees'] = GET($page*$size, $size);
             DELETE($id);
 
             if(($key = array_search('id: '. $id, $arrayJSON)) !== false){
