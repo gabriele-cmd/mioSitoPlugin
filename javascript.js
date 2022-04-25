@@ -169,28 +169,32 @@ $(document).ready(function (){
 
 function linkNext(){
   leggiServer(serverData[ "_links"]["next"]["href"]);
+  //aggiornaPaginazione(serverData["pages"]["number"]);
 };
 
 function linkFirst(){
   leggiServer(serverData[ "_links"]["first"]["href"]);
+  //aggiornaPaginazione(serverData["pages"]["number"]);
 };
 
 function linkLast(){
   leggiServer(serverData[ "_links"]["last"]["href"]);
+  //aggiornaPaginazione(serverData["pages"]["number"]);
 };
 
 function linkPrev(){
   leggiServer(serverData[ "_links"]["prev"]["href"]);
+  //aggiornaPaginazione(serverData["pages"]["number"]);
 };
 
 function linkSelf(){
   leggiServer(serverData[ "_links"]["self"]["href"]);
+  //aggiornaPaginazione(serverData["pages"]["number"]);
 };
 
 function aggiornaPaginazione(n){
-  $("#").text(n + 1);
-  n++;
-  return n;
+  //$("#numPagina").html(n + 1);
+  //document.getElementById("numPagina").textContent = n + 1;
 }
 
 
