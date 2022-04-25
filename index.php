@@ -32,8 +32,13 @@
     switch($method){
 
         case 'GET':
-            $arrayJSON['_embedded']['employees'] = GET($page*$size, $size);
-            echo json_encode($arrayJSON);
+            if($id != 0){
+                $arrayJSON['_embedded']['employees'] = GET_BY_ID($id);
+                echo json_encode($arrayJSON);
+            }else{
+                $arrayJSON['_embedded']['employees'] = GET($page*$size, $size);
+                echo json_encode($arrayJSON);
+            }
             break;
 
         case 'POST':
@@ -47,7 +52,7 @@
             $data = json_decode(file_get_contents('php://input'), true);
             PUT($data["first_name"], $data["last_name"], $data["gender"], $id);
 
-            echo json_encode($data); //FUNZIONE GET ID
+            echo json_encode($data);
             break;
 
         case 'DELETE':

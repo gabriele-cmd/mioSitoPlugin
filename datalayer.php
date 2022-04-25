@@ -12,9 +12,23 @@
 
     function getPageInfo(){}
 
-    function GET($first, $lenght){
+    function GET($page, $lenght){
         require("database.php");
-        $query = "SELECT * FROM employees ORDER BY id LIMIT $first, $lenght";
+        $query = "SELECT * FROM employees ORDER BY id LIMIT $page, $lenght";
+        $rows = array();
+
+        if($result = $mysqli-> query($query)){
+            while($row = $result-> fetch_assoc()){
+                $rows[] = $row;
+            }
+        }
+
+        return $rows;
+    }
+
+    function GET_BY_ID($id){
+        require("database.php");
+        $query = "SELECT * FROM employees WHERE id = $id";
         $rows = array();
 
         if($result = $mysqli-> query($query)){
