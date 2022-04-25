@@ -1,13 +1,13 @@
 var serverData;
 var selfUrl;
 //creo un ID progressivo
-var nextID = 10006;
+var nextID = 500000;
 
 
 function leggiServer(url){
   selfUrl = url;
   //Chiamata GET Ajax
-  $.get( url, function( msg ) {
+  $.get( url, function(msg) {
     serverData = msg;
     displayEmployeeList();
   });
@@ -16,19 +16,51 @@ function leggiServer(url){
 
 //Stampa lista Dipendenti
 function displayEmployeeList(){
-//creo il body della tabella
+
   var rows = '';
+
+  var parts = window.location.search.substr(1).split("&"); //RIPRENDO LA QUERY DIRETTAMENTE DALL'URL
+  var $_GET = {}; //SALVO IN UNA VARIABILE FITTIZIA LA QUERY (COME SE FOSSE UN NORMALE $_GET)
+  for (var i = 0; i < parts.length; i++) {
+      var temp = parts[i].split("=");
+      $_GET[decodeURIComponent(temp[0])] = decodeURIComponent(temp[1]); //SALVO NELL'ARRAY GET UNA VARIABILE ID CONTENENTE L'ID RICHIESTO
+  }
+
+  //creo il body della tabella
   $.each(serverData["_embedded"]["employees"], function(index, value){
-    rows = rows + '<tr>';
-    rows = rows + '<td>' + value.id + '</td>';
-    rows = rows + '<td>' + value.first_name + '</td>';
-    rows = rows + '<td>' + value.last_name + '</td>';
-    rows = rows + '<td>' + value.gender + '</td>';
-    rows = rows + '<td data-id="' + value.id + '">';
-    rows = rows + '<button class="btn btn-warning btn-sm modifica-dipendente" data-bs-toggle="modal" data-bs-target="#modifica-dipendente"> Modifica </button>  ';
-    rows = rows + '<button class="btn btn-danger btn-sm elimina-dipendente"> Elimina </button>';
-    rows = rows + '</td>';
-    rows = rows + '</tr>';
+
+    //RICERCA PER IL GET BY ID
+    /*if($_GET["id"] != ""){
+
+      //CON QUESTO CICLO CERCO L'ELEMENTO DA VISUALIZZARE
+      $.each(serverData["_embedded"]["employees"], function(index, value){
+        if(value.id == $_GET["id"]){
+          rows = rows + '<tr>';
+          rows = rows + '<td>' + value.id + '</td>';
+          rows = rows + '<td>' + value.first_name + '</td>';
+          rows = rows + '<td>' + value.last_name + '</td>';
+          rows = rows + '<td>' + value.gender + '</td>';
+          rows = rows + '<td data-id="' + value.id + '">';
+          rows = rows + '<button class="btn btn-warning btn-sm modifica-dipendente" data-bs-toggle="modal" data-bs-target="#modifica-dipendente"> Modifica </button>  ';
+          rows = rows + '<button class="btn btn-danger btn-sm elimina-dipendente"> Elimina </button>';
+          rows = rows + '</td>';
+          rows = rows + '</tr>';
+
+          return false; //break;
+        }
+      });
+      return false; //break;
+    }*/
+      rows = rows + '<tr>';
+      rows = rows + '<td>' + value.id + '</td>';
+      rows = rows + '<td>' + value.first_name + '</td>';
+      rows = rows + '<td>' + value.last_name + '</td>';
+      rows = rows + '<td>' + value.gender + '</td>';
+      rows = rows + '<td data-id="' + value.id + '">';
+      rows = rows + '<button class="btn btn-warning btn-sm modifica-dipendente" data-bs-toggle="modal" data-bs-target="#modifica-dipendente"> Modifica </button>  ';
+      rows = rows + '<button class="btn btn-danger btn-sm elimina-dipendente"> Elimina </button>';
+      rows = rows + '</td>';
+      rows = rows + '</tr>';
   });
     
   //attraverso il metodo html di jQuery sostituisco il body creato (rows) all'attributo tbody della tabella
@@ -154,5 +186,11 @@ function linkPrev(){
 function linkSelf(){
   leggiServer(serverData[ "_links"]["self"]["href"]);
 };
+
+function aggiornaPaginazione(n){
+  $("#").text(n + 1);
+  n++;
+  return n;
+}
 
 

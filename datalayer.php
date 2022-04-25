@@ -10,8 +10,6 @@
         return $row[0];
     }    
 
-    function getPageInfo(){}
-
     function GET($page, $lenght){
         require("database.php");
         $query = "SELECT * FROM employees ORDER BY id LIMIT $page, $lenght";
@@ -42,8 +40,7 @@
 
     function POST($firstN, $lastN, $g){
         require("database.php");
-        $query = "INSERT INTO employees (first_name, last_name, gender)
-        VALUES ($firstN, $lastN, $g)";
+        $query = "INSERT INTO employees (first_name, last_name, gender) VALUES ($firstN, $lastN, $g)";
         $result = $mysqli-> query($query);
 
     }
