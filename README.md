@@ -45,9 +45,9 @@ Nel progetto sono state implementate le diverse funzioni testabili direttamente 
 
 • La RICERCA di un elemento attraverso FRONTEND è ancora incompleta e presenta i seguenti problemi di difficile risoluzione:
 
-    - Attualmente è impossibile cercare un elemento non appartenente alla pagina che viene caricata di default (la prima, con number = 0) poiché non è stato possibile trovare un modo per scorrere le pagine del JSON nella creazione della tabella.
+    1.Attualmente è impossibile cercare un elemento non appartenente alla pagina che viene caricata di default (la prima, con number = 0) poiché non è stato possibile trovare un modo per scorrere le pagine del JSON nella creazione della tabella.
 
-    - Se si effettua una ricerca qualsiasi (che sia da url o da apposita casella, che dia esito negativo o positivo) e poi si prova a cancellare l'ID da cercare dalla casella (o effettuando una ricerca con ?id= in url) e si clicca su cerca (o si ricarica se da url) non verranno caricati tutti i dati e la pagina rimarrà vuota, per ritornare alla paginazione iniziale occorrerà refreshare la pagina (o eliminare la query dall'url). Questo perché non è stato possibile gestire il caso in cui le variabili passate dalla query risultano stringhe vuote (es. "")
+    2.Se si effettua una ricerca qualsiasi (che sia da url o da apposita casella, che dia esito negativo o positivo) e poi si prova a cancellare l'ID da cercare dalla casella (o effettuando una ricerca con ?id= in url) e si clicca su cerca (o si ricarica se da url) non verranno caricati tutti i dati e la pagina rimarrà vuota, per ritornare alla paginazione iniziale occorrerà refreshare la pagina (o eliminare la query dall'url). Questo perché non è stato possibile gestire il caso in cui le variabili passate dalla query risultano stringhe vuote (es. "")
 
 • La RICERCA di un elemento attraverso URL nel file index.php (BACKEND) invece è completa e perfettamente funzionante
 
