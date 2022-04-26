@@ -14,8 +14,8 @@
 3. Collegarsi tramite Browser alle URL disponibili:
     
     3.1 localhost:8090/tabella.html per visualizzare il FRONTEND
-    4.
-    5.2 localhost:8090/index.php per visualizzare il BACKEND in formato JSON
+    
+    3.2 localhost:8090/index.php per visualizzare il BACKEND in formato JSON
 
 4. COLLEGAMENTO EFFETTUATO!
 
