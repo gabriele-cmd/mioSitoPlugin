@@ -10,6 +10,10 @@ function leggiServer(url){
   $.get( url, function(msg) {
     serverData = msg;
     displayEmployeeList();
+    numPagina = msg.pages.number;
+    numPagina++;
+    aggiornaPaginazione(numPagina);
+    enableDisableButtons(msg.pages.number, msg.pages.totalPages);
   });
   console.log(serverData);
 }
@@ -30,7 +34,7 @@ function displayEmployeeList(){
   $.each(serverData["_embedded"]["employees"], function(index, value){
 
     //RICERCA PER IL GET BY ID
-    /*if($_GET["id"] != ""){
+    /*if($_GET["id"] != "" && $_GET["id"] !== null){
 
       //CON QUESTO CICLO CERCO L'ELEMENTO DA VISUALIZZARE
       $.each(serverData["_embedded"]["employees"], function(index, value){
@@ -92,8 +96,9 @@ $(document).ready(function (){
           })
           .done(function( msg ) {
             alert( 'Item creato con Successo!', 'Success Alert', {timeout: 5000});
-          });
-          
+            //CHIAMATA GET PER AGGIORNARE I DATI NEL FRONTEND
+            leggiServer(selfUrl);
+          });       
 
           nextID++;
           $("#crea-dipendente").modal('hide');
@@ -169,32 +174,40 @@ $(document).ready(function (){
 
 function linkNext(){
   leggiServer(serverData[ "_links"]["next"]["href"]);
-  //aggiornaPaginazione(serverData["pages"]["number"]);
 };
 
 function linkFirst(){
   leggiServer(serverData[ "_links"]["first"]["href"]);
-  //aggiornaPaginazione(serverData["pages"]["number"]);
 };
 
 function linkLast(){
   leggiServer(serverData[ "_links"]["last"]["href"]);
-  //aggiornaPaginazione(serverData["pages"]["number"]);
 };
 
 function linkPrev(){
   leggiServer(serverData[ "_links"]["prev"]["href"]);
-  //aggiornaPaginazione(serverData["pages"]["number"]);
 };
 
 function linkSelf(){
   leggiServer(serverData[ "_links"]["self"]["href"]);
-  //aggiornaPaginazione(serverData["pages"]["number"]);
 };
 
 function aggiornaPaginazione(n){
-  //$("#numPagina").html(n + 1);
-  //document.getElementById("numPagina").textContent = n + 1;
+  $("#numPagina").text(n++);
 }
 
+function enableDisableButtons(n, last){
+  if(n == 0){
+    $("#Prev").addClass("disable");
+    $("#Next").removeClass("disable");
+
+  }else if(n == last){
+    $("#Next").addClass("disable");
+    $("#Prev").removeClass("disable");
+
+  }else{
+    $("#Prev").removeClass("disable");
+    $("#Next").removeClass("disable");
+  }
+}
 

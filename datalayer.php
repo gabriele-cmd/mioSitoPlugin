@@ -40,14 +40,14 @@
 
     function POST($firstN, $lastN, $g){
         require("database.php");
-        $query = "INSERT INTO employees (first_name, last_name, gender) VALUES ($firstN, $lastN, $g)";
+        $query = "INSERT INTO employees (first_name, last_name, gender) VALUES ('$firstN', '$lastN', '$g')";
         $result = $mysqli-> query($query);
 
     }
 
     function PUT($firstN, $lastN, $g, $id){
         require("database.php");
-        $query = "UPDATE employees SET first_name = $firstN, last_name = $lastN, gender = $g WHERE id = $id";
+        $query = "UPDATE employees SET first_name = '$firstN', last_name = '$lastN', gender = '$g' WHERE id = $id";
         $result = $mysqli-> query($query);
         
     }

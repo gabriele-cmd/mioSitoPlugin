@@ -58,9 +58,9 @@
         case 'DELETE':
             DELETE($id);
 
-            if(($key = array_search('id: '. $id, $arrayJSON)) !== false){
-                unset($arrayJSON[$key]);
-            }
+            // if(($key = array_search('id: '. $id, $arrayJSON)) !== false){
+            //     unset($arrayJSON[$key]);
+            // }
 
             echo json_encode($arrayJSON);
             break;
