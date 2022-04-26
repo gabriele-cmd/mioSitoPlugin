@@ -18,24 +18,28 @@
 
 4. COLLEGAMENTO EFFETTUATO!
 
+
+
 -- FUNZIONI DISPONIBILI --  
 Nel progetto sono state implementate le diverse funzioni testabili direttamente da browser:
 
-    - AGGIUNTA
-    - MODIFICA
-    - ELIMINAZIONE
-    - PAGINAZIONE dinamica che include:
-                                        - la pagina CORRENTE (rappresentata dal numero variabile)
-                                        - la pagina PRECEDENTE (rappresentata da <<)
-                                        - la pagina SUCCESSIVA (rappresentata da >>)
-                                        - la PRIMA pagina (rappresentata da First)
-                                        - l'ULTIMA pagina (rappresentata da Last)
+- AGGIUNTA
+- MODIFICA
+- ELIMINAZIONE
+- PAGINAZIONE dinamica che include:
+    - la pagina CORRENTE (rappresentata dal numero variabile)
+    - la pagina PRECEDENTE (rappresentata da <<)
+    - la pagina SUCCESSIVA (rappresentata da >>)
+    - la PRIMA pagina (rappresentata da First)
+    - l'ULTIMA pagina (rappresentata da Last)
 
-    - RICERCA di un elemento effettuabile da:
-                                        - FRONTEND utilizzando l'apposita casella di ricerca oppure tramite query URL (inserendo ?id=xxxxx prima del fragment)
-                                        - BACKEND (ovvero index.php) esclusivamente tramite query URL
+- RICERCA di un elemento effettuabile da:
+    - FRONTEND utilizzando l'apposita casella di ricerca oppure tramite query URL (inserendo ?id=xxxxx prima del fragment)
+    - BACKEND (ovvero index.php) esclusivamente tramite query URL
 
-                                        - N.B. La funzione di RICERCA del FRONTEND presenta ancora diversi problemi ed è tutt'ora INCOMPLETA, fai riferimento alle NOTE FINALI per ulteriori dettagli.
+    - N.B. La funzione di RICERCA del FRONTEND presenta ancora diversi problemi ed è tutt'ora INCOMPLETA, fai riferimento alle NOTE FINALI per ulteriori dettagli.
+
+
 
 -- NOTE FINALI E CONSIDERAZIONI --
 
