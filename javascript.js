@@ -2,15 +2,31 @@ var serverData;
 var selfUrl;
 //creo un ID progressivo
 var nextID = 500000;
+var idRicerca;
 
+function getPageInfo(url){
+  selfUrl = url;
+  var infos = {};
+  $.get( url, function(msg) {
+    infos = {
+      size: msg.pages.size,
+      totalElements: msg.pages.totalElements,
+      totalPages: msg.pages.totalPages,
+      number: msg.pages.number
+    };
+  });
+  return infos;
+}
 
 function leggiServer(url){
   selfUrl = url;
   //Chiamata GET Ajax
-  $.get( url, function(msg) {
+  $.get(url, function(msg) {
     serverData = msg;
     displayEmployeeList();
-    numPagina = msg.pages.number;
+    getPageInfo(url);
+    
+    var numPagina = msg.pages.number;
     numPagina++;
     aggiornaPaginazione(numPagina);
     enableDisableButtons(msg.pages.number, msg.pages.totalPages);
@@ -33,8 +49,29 @@ function displayEmployeeList(){
   //creo il body della tabella
   $.each(serverData["_embedded"]["employees"], function(index, value){
 
-    //RICERCA PER IL GET BY ID
-    /*if($_GET["id"] != "" && $_GET["id"] !== null){
+    //RICERCA ATTRAVERSO FORM DI RICERCA
+    if(typeof idRicerca !== "undefined"){
+      $.each(serverData["_embedded"]["employees"], function(index, value){
+        if(value.id == idRicerca){
+          rows = rows + '<tr>';
+          rows = rows + '<td>' + value.id + '</td>';
+          rows = rows + '<td>' + value.first_name + '</td>';
+          rows = rows + '<td>' + value.last_name + '</td>';
+          rows = rows + '<td>' + value.gender + '</td>';
+          rows = rows + '<td data-id="' + value.id + '">';
+          rows = rows + '<button class="btn btn-warning btn-sm modifica-dipendente" data-bs-toggle="modal" data-bs-target="#modifica-dipendente"> Modifica </button>  ';
+          rows = rows + '<button class="btn btn-danger btn-sm elimina-dipendente"> Elimina </button>';
+          rows = rows + '</td>';
+          rows = rows + '</tr>';
+
+          return false; //break;
+        }
+      });
+      return false; //break;
+    }
+
+    //RICERCA ATTRAVERSO QUERY IN URL
+    if(typeof $_GET["id"] !== "undefined"){
 
       //CON QUESTO CICLO CERCO L'ELEMENTO DA VISUALIZZARE
       $.each(serverData["_embedded"]["employees"], function(index, value){
@@ -54,17 +91,19 @@ function displayEmployeeList(){
         }
       });
       return false; //break;
-    }*/
-      rows = rows + '<tr>';
-      rows = rows + '<td>' + value.id + '</td>';
-      rows = rows + '<td>' + value.first_name + '</td>';
-      rows = rows + '<td>' + value.last_name + '</td>';
-      rows = rows + '<td>' + value.gender + '</td>';
-      rows = rows + '<td data-id="' + value.id + '">';
-      rows = rows + '<button class="btn btn-warning btn-sm modifica-dipendente" data-bs-toggle="modal" data-bs-target="#modifica-dipendente"> Modifica </button>  ';
-      rows = rows + '<button class="btn btn-danger btn-sm elimina-dipendente"> Elimina </button>';
-      rows = rows + '</td>';
-      rows = rows + '</tr>';
+    }
+      
+    rows = rows + '<tr>';
+    rows = rows + '<td>' + value.id + '</td>';
+    rows = rows + '<td>' + value.first_name + '</td>';
+    rows = rows + '<td>' + value.last_name + '</td>';
+    rows = rows + '<td>' + value.gender + '</td>';
+    rows = rows + '<td data-id="' + value.id + '">';
+    rows = rows + '<button class="btn btn-warning btn-sm modifica-dipendente" data-bs-toggle="modal" data-bs-target="#modifica-dipendente"> Modifica </button>  ';
+    rows = rows + '<button class="btn btn-danger btn-sm elimina-dipendente"> Elimina </button>';
+    rows = rows + '</td>';
+    rows = rows + '</tr>';
+    
   });
     
   //attraverso il metodo html di jQuery sostituisco il body creato (rows) all'attributo tbody della tabella
@@ -74,6 +113,10 @@ function displayEmployeeList(){
 $(document).ready(function (){
 
   leggiServer("http://localhost:8090/index.php");
+
+    $("#submitRicerca").on('click', function(){
+      submitHandler();
+    });
 
     //Aggiungo un Dipendente
     $('#aggiungi').on('click', function(element){
@@ -209,5 +252,10 @@ function enableDisableButtons(n, last){
     $("#Prev").removeClass("disable");
     $("#Next").removeClass("disable");
   }
+}
+
+function submitHandler(){
+    idRicerca = $("#ricerca").val();
+    leggiServer(selfUrl);
 }
 
