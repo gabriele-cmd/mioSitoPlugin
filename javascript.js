@@ -110,9 +110,29 @@ function displayEmployeeList(){
     $("#tbody").html(rows);
   }
 
+
+
+//DOCUMENT READY
 $(document).ready(function (){
 
-  leggiServer("http://localhost:8090/index.php");
+  $('#tabellaDati').DataTable( {
+      "processing": true,
+      "serverSide": true,
+      "ajax": {
+          "url": "http://localhost:8090/index.php",
+          "type": "POST"
+      },
+      "columns": [
+          { "data": "id" },
+          { "data": "birth_date" },
+          { "data": "first_name" },
+          { "data": "last_name" },
+          { "data": "gender" },
+          { "data": "hire_date" }
+      ]
+  } );
+
+  //leggiServer("http://localhost:8090/index.php");
 
     $("#submitRicerca").on('click', function(){
       submitHandler();

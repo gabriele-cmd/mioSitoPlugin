@@ -1,33 +1,25 @@
 <?php
+
     $method = $_SERVER['REQUEST_METHOD'];
     //$request = explode("/", substr(@$_SERVER['PATH_INFO'], 1));
     
     require("datalayer.php");
     header('Content-Type: application/json');
-    $page = @$_GET["page"] ?? 0;
-    $size = @$_GET["size"] ?? 20;
-    $id = @$_GET["id"] ?? 0;
+    $page = @$_POST["start"] ?? 0;
+    $size = @$_POST["length"] ?? 10;
+    $id = @$_POST["id"] ?? 0;
     $count = countRow();
-    $last = ceil($count/$size) -1;
+    $results = countResults($_POST["search[value]"]);
+    $draw = $_SESSION["counter"] + 1;
     $baseurl = "http://localhost:8090/index.php";
 
-
-    $arrayJSON = array ();
-
-    $arrayJSON['_embedded'] = array(
-        "employees" => array(
-            
-        )
+    $arrayJSON = array (
+        "recordsTotal" => $count,
+        "recordsFiltered" => $results,
+        "draw" => $draw
     );
 
-    $arrayJSON['_links'] = links($page, $size, $last, $baseurl);
-
-    $arrayJSON['pages'] = array (
-        "size" => $size,
-        "totalElements" => $count,
-        "totalPages" => $last,
-        "number" => $page
-    );
+    $arrayJSON['data'] = array( );
 
     switch($method){
 
@@ -57,10 +49,6 @@
 
         case 'DELETE':
             DELETE($id);
-
-            // if(($key = array_search('id: '. $id, $arrayJSON)) !== false){
-            //     unset($arrayJSON[$key]);
-            // }
 
             echo json_encode($arrayJSON);
             break;

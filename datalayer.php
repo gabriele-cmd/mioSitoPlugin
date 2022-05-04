@@ -10,6 +10,22 @@
         return $row[0];
     }    
 
+    function countResults($filter){
+        require("database.php");
+        $query = "SELECT count(*) FROM employees 
+                  WHERE id like '$filter' 
+                  OR birth_date like '$filter' 
+                  OR first_name like '$filter' 
+                  OR last_name like '$filter' 
+                  OR gender like '$filter' 
+                  OR hire_date like '$filter'";
+        
+        $result = $mysqli-> query($query);
+        $row = $result-> fetch_row();
+
+        return $row[0];
+    }
+
     function GET($page, $lenght){
         require("database.php");
         $query = "SELECT * FROM employees ORDER BY id LIMIT $page, $lenght";

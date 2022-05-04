@@ -1,4 +1,7 @@
 <?php
+    session_start();
+    $_SESSION["counter"] = 0;
+    
     $hostname = "172.17.0.1:3306";
     $database = "mydb";
     $user = "root";
