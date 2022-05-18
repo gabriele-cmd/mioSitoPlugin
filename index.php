@@ -8,38 +8,47 @@
     $page = @$_POST["start"] ?? 0;
     $size = @$_POST["length"] ?? 10;
     $id = @$_POST["id"] ?? 0;
+    $searchVal = $_POST["search[value]"];
     $count = countRow();
-    $results = countResults($_POST["search[value]"]);
+    $results = countResults($searchVal);
     $draw = $_SESSION["counter"] + 1;
     $baseurl = "http://localhost:8090/index.php";
 
-    $arrayJSON = array (
-        "recordsTotal" => $count,
-        "recordsFiltered" => $results,
-        "draw" => $draw
-    );
-
-    $arrayJSON['data'] = array( );
-
     switch($method){
 
-        case 'GET':
+        case 'POST':
+
+            if(!is_null($searchVal)){
+                $arrayJSON['data'] = GET_FILTERED($searchVal);
+                $arrayJSON['recordsFiltered'] = $count;
+                $arrayJSON['recordsTotal'] = $count;
+                echo json_encode($arrayJSON);
+            }else{
+                $arrayJSON['data'] = GET($page*$size, $size);
+                $arrayJSON['recordsFiltered'] = $count;
+                $arrayJSON['recordsTotal'] = $count;
+                echo json_encode($arrayJSON);
+            }
+
+
+            /*
             if($id != 0){
                 $arrayJSON['_embedded']['employees'] = GET_BY_ID($id);
                 echo json_encode($arrayJSON);
             }else{
                 $arrayJSON['_embedded']['employees'] = GET($page*$size, $size);
                 echo json_encode($arrayJSON);
-            }
+            }*/
             break;
 
+        /*
         case 'POST':
             $data = json_decode(file_get_contents('php://input'), true);
             POST($data["first_name"], $data["last_name"], $data["gender"]);
 
             echo json_encode($data);
             break;
-
+        */
         case 'PUT':
             $data = json_decode(file_get_contents('php://input'), true);
             PUT($data["first_name"], $data["last_name"], $data["gender"], $id);

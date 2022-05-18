@@ -40,9 +40,16 @@
         return $rows;
     }
 
-    function GET_BY_ID($id){
+    function GET_FILTERED($searchValue){
         require("database.php");
-        $query = "SELECT * FROM employees WHERE id = $id";
+        $query = "SELECT * FROM employees
+        WHERE id like '%$searchValue%'
+        OR first_name like '%$searchValue%'
+        OR birth_date like '%$searchValue%'
+        OR last_name like '%$searchValue%'
+        OR hire_date like '%$searchValue%'
+        OR M like '%$searchValue%'";
+
         $rows = array();
 
         if($result = $mysqli-> query($query)){
