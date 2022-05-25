@@ -13,12 +13,12 @@
     function countResults($filter){
         require("database.php");
         $query = "SELECT count(*) FROM employees 
-                  WHERE id like '$filter' 
-                  OR birth_date like '$filter' 
-                  OR first_name like '$filter' 
-                  OR last_name like '$filter' 
-                  OR gender like '$filter' 
-                  OR hire_date like '$filter'";
+                  WHERE id like '%$filter%' 
+                  OR birth_date like '%$filter%' 
+                  OR first_name like '%$filter%' 
+                  OR last_name like '%$filter%' 
+                  OR gender like '%$filter%' 
+                  OR hire_date like '%$filter%'";
         
         $result = $mysqli-> query($query);
         $row = $result-> fetch_row();
@@ -26,9 +26,30 @@
         return $row[0];
     }
 
-    function GET($page, $lenght){
+    function GET($page, $lenght, $order){
         require("database.php");
-        $query = "SELECT * FROM employees ORDER BY id LIMIT $page, $lenght";
+
+        if($order[0]["column"] == 0){
+            $colonna = "id";
+        }else if($order[0]["column"] == 1){
+            $colonna = "birth_date";
+        }else if($order[0]["column"] == 2){
+            $colonna = "first_name";
+        }else if($order[0]["column"] == 3){
+            $colonna = "last_name";
+        }else if($order[0]["column"] == 4){
+            $colonna = "gender";
+        }else if($order[0]["column"] == 5){
+            $colonna = "hire_date";
+        }
+
+        if($order[0]["dir"] == "asc"){
+            $ordine = "ASC";
+        }else{
+            $ordine = "DESC";
+        }
+
+        $query = "SELECT * FROM employees ORDER BY $colonna $ordine LIMIT $page, $lenght";
         $rows = array();
 
         if($result = $mysqli-> query($query)){
@@ -40,15 +61,37 @@
         return $rows;
     }
 
-    function GET_FILTERED($searchValue){
+    function GET_FILTERED($searchValue, $page, $lenght, $order){
         require("database.php");
+        
+        if($order[0]["column"] == 0){
+            $colonna = "id";
+        }else if($order[0]["column"] == 1){
+            $colonna = "birth_date";
+        }else if($order[0]["column"] == 2){
+            $colonna = "first_name";
+        }else if($order[0]["column"] == 3){
+            $colonna = "last_name";
+        }else if($order[0]["column"] == 4){
+            $colonna = "gender";
+        }else if($order[0]["column"] == 5){
+            $colonna = "hire_date";
+        }
+
+        if($order[0]["dir"] == "asc"){
+            $ordine = "ASC";
+        }else{
+            $ordine = "DESC";
+        }
+
         $query = "SELECT * FROM employees
         WHERE id like '%$searchValue%'
         OR first_name like '%$searchValue%'
         OR birth_date like '%$searchValue%'
         OR last_name like '%$searchValue%'
         OR hire_date like '%$searchValue%'
-        OR M like '%$searchValue%'";
+        OR gender like '%$searchValue%'
+        ORDER BY $colonna $ordine LIMIT $page $lenght";
 
         $rows = array();
 
@@ -59,13 +102,6 @@
         }
 
         return $rows;
-    }
-
-    function POST($firstN, $lastN, $g){
-        require("database.php");
-        $query = "INSERT INTO employees (first_name, last_name, gender) VALUES ('$firstN', '$lastN', '$g')";
-        $result = $mysqli-> query($query);
-
     }
 
     function PUT($firstN, $lastN, $g, $id){
