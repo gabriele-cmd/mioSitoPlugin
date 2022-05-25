@@ -91,7 +91,7 @@
         OR last_name like '%$searchValue%'
         OR hire_date like '%$searchValue%'
         OR gender like '%$searchValue%'
-        ORDER BY $colonna $ordine LIMIT $page $lenght";
+        ORDER BY $colonna $ordine LIMIT $page, $lenght";
 
         $rows = array();
 
